@@ -1,1 +1,11 @@
-/* Empty. Add your own CSS if you like */
+.edit-time-popup .popup-body input {
+    text-align: center;
+}
+
+.punchclock-time {
+    font-weight: bold !important;
+}
+
+.punchclock-time-edited {
+    font-style: italic !important;
+}

@@ -1,0 +1,42 @@
+<ion-view view-title="Punch Clock">
+    <ion-content class="padding">
+        <div class="card"
+             ng-repeat="key in vm.getKeys()"
+             on-hold="vm.editEntry(key)">
+            <ion-item
+                    ng-class="{
+                        'item-button-right': vm.canShowCheckMarkButton(key) || vm.today[key].canUndo
+                    }">
+                {{vm.today[key].description}}
+                <button class="button button-light"
+                        ng-show="vm.canShowCheckMarkButton(key)"
+                        ng-click="vm.setTime(key)">
+                    <i class="icon ion-checkmark"></i>
+                </button>
+                <button class="button button-calm"
+                        ng-show="vm.today[key].canUndo"
+                        ng-click="vm.undo(key)">
+                    <i class="icon ion-reply"></i>
+                </button>
+                <span class="item-note" ng-hide="!vm.today[key].value">
+                    <span ng-class="{
+                            'punchclock-time-edited': vm.today[key].edited,
+                            'punchclock-time': !vm.today[key].edited
+                        }">
+                        {{vm.today[key].value}}
+                        <span ng-show="vm.today[key].edited">(edited)</span>
+                    </span>
+                </span>
+            </ion-item>
+
+        </div>
+        <div class="card" ng-show="vm.canShowTotalHours()">
+            <ion-item class="item-divider">
+                Worked hours:
+                <span class="item-note">
+                    {{vm.getTotalHours()}}
+                </span>
+            </ion-item>
+        </div>
+    </ion-content>
+</ion-view>
