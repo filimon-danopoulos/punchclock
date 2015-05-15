@@ -8,20 +8,25 @@
         '$scope',
         '$timeout',
         '$ionicPopup',
-        'punchclockDefaults',
-        'timeCalculationService'
+        'timeCalculationService',
+        'persistence',
+        'dayEntity',
+        'dayEntityKey',
+        'dayMappingService',
+        'punchclockDefaults'
     ];
     function PunchClockController(
             $scope,
             $timeout,
             $ionicPopup,
-            punchclockDefaults,
-            time) {
+            time,
+            persistence,
+            dayEntity,
+            dayEntityKey,
+            dayMapper,
+            defaultValues) {
         var vm = this,
             editModal;
-
-        /// Data
-        vm.today = punchclockDefaults;
 
         /// Actions
         vm.editEntry = editEntry;
@@ -36,7 +41,24 @@
         initialize();
         /// Implementation
         function initialize() {
+            loadData();
+        }
 
+        function loadData() {
+            var entity = persistence.entity(dayEntity),
+                data = entity.select(getCurrentKey());
+            if (data) {
+                vm.today = dayMapper.mapFromDataEntity(data);
+            } else {
+                vm.today = defaultValues;
+                entity.insert(dayMapper.mapToDataEntity(getCurrentKey(), vm.today));
+            }
+
+        }
+
+        function getCurrentKey() {
+            var date = new Date();
+            return date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
         }
 
         function editEntry(target) {
@@ -72,6 +94,14 @@
             vm.today[vm.edited].edited = true;
 
             vm.edited = null;
+
+            save();
+        }
+
+
+        function save() {
+            var data = dayMapper.mapToDataEntity(getCurrentKey(), vm.today);
+            persistence.entity(dayEntity).upsert(data);
         }
 
         function setTime(target, isEdit) {
@@ -81,6 +111,7 @@
             vm.today[target].canUndo = true;
             $timeout(function() {
                 vm.today[target].canUndo = false;
+                save();
             }, 10000);
         }
 
