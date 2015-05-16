@@ -19,13 +19,20 @@
                         <span ng-show="vm.today[key].edited">(edited)</span>
                     </span>
                 </span>
-                <ion-option-button>
-                    <i class="icon ion-checkmark"></i>
+                <ion-option-button ng-show="vm.today[key].value"
+                        class="button-clear"
+                        ng-click="vm.editEntry(key)">
+                    <i class="icon ion-edit"></i>
+                </ion-option-button>
+                <ion-option-button ng-show="vm.today[key].value"
+                        class="button-clear button-assertive"
+                        ng-click="vm.clearEntry(key)">
+                    <i class="icon ion-close"></i>
                 </ion-option-button>
             </ion-item>
             <ion-item class="item-divider item-icon-right"  ng-show="vm.canShowTotalHours()">
-                Worked hours:
-                <span class="item-note">
+                Total, worked hours:
+                <span class="item-note punchclock-time">
                     {{vm.getTotalHours()}}
                 </span>
             </ion-item>

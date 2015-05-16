@@ -8,6 +8,7 @@
         '$scope',
         '$timeout',
         '$ionicPopup',
+        '$ionicListDelegate',
         'timeCalculationService',
         'persistence',
         'dayEntity',
@@ -19,6 +20,7 @@
             $scope,
             $timeout,
             $ionicPopup,
+            $ionicListDelegate,
             time,
             persistence,
             dayEntity,
@@ -30,6 +32,7 @@
 
         /// Actions
         vm.editEntry = editEntry;
+        vm.clearEntry = clearEntry;
         vm.setTime = setTime;
         vm.getTodayActivities = getTodayActivities;
         vm.canShowTotalHours = canShowTotalHours;
@@ -63,6 +66,7 @@
         }
 
         function editEntry(target) {
+            $ionicListDelegate.closeOptionButtons();
             if (!vm.today[target].value) {
                 return;
             }
@@ -90,7 +94,6 @@
             now.setMinutes(timeParts[1]);
             vm.today[vm.edited].original = vm.today[vm.edited].value;
             vm.today[vm.edited].value = time.getTimeString(now);
-            vm.today[vm.edited].timestamp = +now;
             vm.today[vm.edited].canUndo = false;
             vm.today[vm.edited].edited = true;
 
@@ -99,16 +102,23 @@
             save();
         }
 
-
         function save() {
             var data = dayMapper.mapToDataEntity(getCurrentKey(), vm.today);
             persistence.entity(dayEntity).upsert(data);
         }
 
+        function clearEntry(key) {
+            $ionicListDelegate.closeOptionButtons();
+            vm.today[key].original = vm.today[key].value;
+            vm.today[key].value = null;
+            vm.today[key].canUndo = false;
+            vm.today[key].edited = true;
+            save();
+        }
+
         function setTime(target, isEdit) {
             var now = new Date();
             vm.today[target].value = time.getTimeString(now);
-            vm.today[target].timestamp = +now;
             vm.today[target].canUndo = true;
             save();
             $timeout(function() {
@@ -167,6 +177,8 @@
         }
 
         function undo(target) {
+            $ionicListDelegate.closeOptionButtons();
+
             vm.today[target].value = null;
             vm.today[target].timestamp = null;
             vm.today[target].canUndo = false;
