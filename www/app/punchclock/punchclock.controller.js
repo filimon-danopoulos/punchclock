@@ -31,10 +31,11 @@
         /// Actions
         vm.editEntry = editEntry;
         vm.setTime = setTime;
-        vm.getKeys = getKeys;
+        vm.getTodayActivities = getTodayActivities;
         vm.canShowTotalHours = canShowTotalHours;
         vm.getTotalHours = getTotalHours;
         vm.canShowCheckMarkButton = canShowCheckMarkButton;
+        vm.hasVisibleButton = hasVisibleButton;
         vm.undo = undo;
 
         /// Initialize
@@ -109,14 +110,14 @@
             vm.today[target].value = time.getTimeString(now);
             vm.today[target].timestamp = +now;
             vm.today[target].canUndo = true;
+            save();
             $timeout(function() {
                 vm.today[target].canUndo = false;
-                save();
             }, 10000);
         }
 
 
-        function getKeys() {
+        function getTodayActivities() {
             return Object.keys(vm.today)
                 .sort(function(a, b) {
                     return vm.today[a].order - vm.today[b].order;
@@ -124,10 +125,7 @@
         }
 
         function canShowTotalHours() {
-            return Object.keys(vm.today)
-                .every(function(x) {
-                    return vm.today[x].value;
-                });
+            return vm.today.arrival.value && vm.today.departure.value;
         }
 
         function getTotalHours() {
@@ -139,15 +137,45 @@
             );
         }
 
-
         function canShowCheckMarkButton(target) {
-            return !vm.today[target].value;
+            switch(target) {
+                case 'arrival': return isArrivalButtonAvailable();
+                case 'lunchStart': return isLunchStartButtonAvailable();
+                case 'lunchStop': return isLunchStopButtonAvailable();
+                case 'departure': return isDepartureButtonAvailable();
+            }
+        }
+
+        function isArrivalButtonAvailable() {
+            return !vm.today.arrival.value;
+        }
+
+        function isLunchStartButtonAvailable() {
+            return vm.today.arrival.value &&
+                !vm.today.departure.value &&
+                !vm.today.lunchStart.value;
+        }
+
+        function isLunchStopButtonAvailable() {
+            return vm.today.lunchStart.value && !vm.today.lunchStop.value;
+        }
+
+        function isDepartureButtonAvailable() {
+            return vm.today.arrival.value &&
+                (!vm.today.lunchStart.value || vm.today.lunchStop.value) &&
+                !vm.today.departure.value;
         }
 
         function undo(target) {
             vm.today[target].value = null;
             vm.today[target].timestamp = null;
             vm.today[target].canUndo = false;
+
+            save();
+        }
+
+        function hasVisibleButton(key) {
+            return canShowCheckMarkButton(key) || vm.today[key].canUndo;
         }
     }
 })();

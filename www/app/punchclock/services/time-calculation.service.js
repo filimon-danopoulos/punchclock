@@ -37,13 +37,13 @@
 
         function getTotalHours(arrival, lunchStart, lunchStop, departure) {
             var arrivalTime = getTimeInMinutes(arrival),
-                lunchStartTime = getTimeInMinutes(lunchStart),
-                lunchStopTime = getTimeInMinutes(lunchStop),
                 departureTime = getTimeInMinutes(departure),
-                lunchDuration = lunchStopTime - lunchStartTime,
                 totalTime;
 
-            arrivalTime  += lunchDuration;
+            if (lunchStart && lunchStop) {
+                arrivalTime  += (getTimeInMinutes(lunchStop) - getTimeInMinutes(lunchStart));
+            }
+
             totalTime = departureTime - arrivalTime;
             return formatTotalHours(totalTime);
         }

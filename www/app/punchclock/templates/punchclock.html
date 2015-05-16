@@ -1,42 +1,34 @@
 <ion-view view-title="Punch Clock">
-    <ion-content class="padding">
-        <div class="card"
-             ng-repeat="key in vm.getKeys()"
-             on-hold="vm.editEntry(key)">
-            <ion-item
-                    ng-class="{
-                        'item-button-right': vm.canShowCheckMarkButton(key) || vm.today[key].canUndo
-                    }">
+    <ion-content>
+        <ion-list >
+            <ion-item ng-repeat="key in vm.getTodayActivities()"
+                    class="item-icon-right">
                 {{vm.today[key].description}}
-                <button class="button button-light"
-                        ng-show="vm.canShowCheckMarkButton(key)"
-                        ng-click="vm.setTime(key)">
-                    <i class="icon ion-checkmark"></i>
-                </button>
-                <button class="button button-calm"
-                        ng-show="vm.today[key].canUndo"
-                        ng-click="vm.undo(key)">
-                    <i class="icon ion-reply"></i>
-                </button>
+                <i class="icon ion-checkmark balanced"
+                    ng-show="vm.canShowCheckMarkButton(key)"
+                    ng-click="vm.setTime(key)"></i>
+                <i class="icon ion-reply calm"
+                    ng-show="vm.today[key].canUndo"
+                    ng-click="vm.undo(key)"></i>
                 <span class="item-note" ng-hide="!vm.today[key].value">
-                    <span ng-class="{
+                    <span class="punchclock-time" ng-class="{
                             'punchclock-time-edited': vm.today[key].edited,
-                            'punchclock-time': !vm.today[key].edited
+                            'punchclock-time-undoable': vm.today[key].canUndo
                         }">
                         {{vm.today[key].value}}
                         <span ng-show="vm.today[key].edited">(edited)</span>
                     </span>
                 </span>
+                <ion-option-button>
+                    <i class="icon ion-checkmark"></i>
+                </ion-option-button>
             </ion-item>
-
-        </div>
-        <div class="card" ng-show="vm.canShowTotalHours()">
-            <ion-item class="item-divider">
+            <ion-item class="item-divider item-icon-right"  ng-show="vm.canShowTotalHours()">
                 Worked hours:
                 <span class="item-note">
                     {{vm.getTotalHours()}}
                 </span>
             </ion-item>
-        </div>
+        </ion-list>
     </ion-content>
 </ion-view>
