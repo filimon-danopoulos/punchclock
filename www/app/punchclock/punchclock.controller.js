@@ -42,7 +42,8 @@
         vm.canShowCheckMarkButton = canShowCheckMarkButton;
         vm.hasVisibleButton = hasVisibleButton;
         vm.undo = undo;
-        vm.saveShowResultAsDecimal = saveShowResultAsDecimal;
+        vm.toggleShowResultAsDecimal = toggleShowResultAsDecimal;
+        vm.getTotalDescription = getTotalDescription;
 
         /// Initialize
         initialize();
@@ -203,8 +204,16 @@
             return canShowCheckMarkButton(key) || vm.today[key].canUndo;
         }
 
-        function saveShowResultAsDecimal() {
+        function toggleShowResultAsDecimal() {
+            vm.showResultAsDecimal = !vm.showResultAsDecimal;
             settings.saveSetting('showResultAsDecimal', vm.showResultAsDecimal);
+        }
+
+        function getTotalDescription() {
+            if (vm.showResultAsDecimal) {
+                return 'as decimal';
+            }
+            return 'hours and minutes';
         }
     }
 })();

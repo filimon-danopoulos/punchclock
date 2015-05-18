@@ -35,18 +35,17 @@
             </ion-item>
             <ion-item class="item-divider" ng-show="vm.canShowTotalHours()">
                 Result
+                <span class="item-note">
+                    swipe to change format
+                </span>
             </ion-item>
-            <ion-item ng-show="vm.canShowTotalHours()">
-                Total, worked hours:
+            <ion-item ng-show="vm.canShowTotalHours()"
+                on-swipe="vm.toggleShowResultAsDecimal()">
+                Total, {{vm.getTotalDescription()}}:
                 <span class="item-note punchclock-result">
                     <strong>{{vm.getTotalHours()}}</strong>
                 </span>
             </ion-item>
-            <ion-toggle ng-model="vm.showResultAsDecimal"
-                    ng-show="vm.canShowTotalHours()"
-                    ng-change="vm.saveShowResultAsDecimal()">
-                <span class="punchclock-discrete-text">Show result as decimal</span>
-            </ion-toggle>   
         </ion-list>
     </ion-content>
 </ion-view>
