@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.common')
-        .factory('persistence', persistenceServiceFactory);
+        .factory('persistenceService', persistenceServiceFactory);
 
     persistenceServiceFactory.inject = ['$window'];
     function persistenceServiceFactory($window) {

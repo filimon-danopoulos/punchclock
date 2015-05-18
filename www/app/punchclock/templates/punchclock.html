@@ -1,6 +1,9 @@
 <ion-view view-title="Punch Clock">
     <ion-content>
         <ion-list >
+            <ion-item class="item-divider">
+                Times
+            </ion-item>
             <ion-item ng-repeat="key in vm.getTodayActivities()"
                     class="item-icon-right">
                 {{vm.today[key].description}}
@@ -30,12 +33,20 @@
                     <i class="icon ion-close"></i>
                 </ion-option-button>
             </ion-item>
-            <ion-item class="item-divider item-icon-right"  ng-show="vm.canShowTotalHours()">
+            <ion-item class="item-divider" ng-show="vm.canShowTotalHours()">
+                Result
+            </ion-item>
+            <ion-item ng-show="vm.canShowTotalHours()">
                 Total, worked hours:
-                <span class="item-note punchclock-time">
-                    {{vm.getTotalHours()}}
+                <span class="item-note punchclock-result">
+                    <strong>{{vm.getTotalHours()}}</strong>
                 </span>
             </ion-item>
+            <ion-toggle ng-model="vm.showResultAsDecimal"
+                    ng-show="vm.canShowTotalHours()"
+                    ng-change="vm.saveShowResultAsDecimal()">
+                <span class="punchclock-discrete-text">Show result as decimal</span>
+            </ion-toggle>   
         </ion-list>
     </ion-content>
 </ion-view>

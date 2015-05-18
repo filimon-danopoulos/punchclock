@@ -10,7 +10,8 @@
             getTimeString: getTimeString,
             formatNumber: formatNumber,
             formatTotalHours: formatTotalHours,
-            getTotalHours: getTotalHours
+            getTotalHours: getTotalHours,
+            convertToDecimal: convertToDecimal
         };
 
         function getTimeString(now) {
@@ -54,6 +55,15 @@
             }
             var parts = time.split(':');
             return parts[0]*60+ parseInt(parts[1], 10);
+        }
+
+        function convertToDecimal(timeString) {
+            var precision = 4,
+                timeParts = timeString.split(':'),
+                hours = parseInt(timeParts[0], 10),
+                minutes = parseInt(timeParts[1], 10);
+            minutes = (Math.round((minutes/60)*Math.pow(10, precision))/Math.pow(10, precision));
+            return (hours+minutes).toFixed(precision);
         }
     }
 })();

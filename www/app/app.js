@@ -6,6 +6,7 @@
         'ionic',
         // Application modules
         'app.common',
+        'app.settings',
         'app.tabs',
         'app.punchclock',
         'app.history',
@@ -13,8 +14,15 @@
     ];
 
     angular.module('app', dependecies)
-        .run(run)
-        .config(config);
+        .config(config)
+        .run(run);
+
+    config.$inject = ['$urlRouterProvider'];
+    function config($urlRouterProvider) {
+        // Default route
+        $urlRouterProvider.otherwise('/app/punchclock');
+    }
+
 
     run.$inject = ['$ionicPlatform'];
     function run($ionicPlatform) {
@@ -30,10 +38,5 @@
         });
     }
 
-    config.$inject = ['$urlRouterProvider'];
-    function config($urlRouterProvider) {
-        // Default route
-        $urlRouterProvider.otherwise('/app/punchclock');
-    }
 
 })();

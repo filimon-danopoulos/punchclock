@@ -10,11 +10,12 @@
         '$ionicPopup',
         '$ionicListDelegate',
         'timeCalculationService',
-        'persistence',
+        'persistenceService',
         'dayEntity',
         'dayEntityKey',
         'dayMappingService',
-        'punchclockDefaults'
+        'punchclockDefaults',
+        'settingsService'
     ];
     function PunchClockController(
             $scope,
@@ -26,7 +27,8 @@
             dayEntity,
             dayEntityKey,
             dayMapper,
-            defaultValues) {
+            defaultValues,
+            settings) {
         var vm = this,
             editModal;
 
@@ -40,12 +42,18 @@
         vm.canShowCheckMarkButton = canShowCheckMarkButton;
         vm.hasVisibleButton = hasVisibleButton;
         vm.undo = undo;
+        vm.saveShowResultAsDecimal = saveShowResultAsDecimal;
 
         /// Initialize
         initialize();
         /// Implementation
         function initialize() {
+            loadSettings();
             loadData();
+        }
+
+        function loadSettings() {
+            vm.showResultAsDecimal = settings.loadSetting('showResultAsDecimal') || false;
         }
 
         function loadData() {
@@ -139,12 +147,17 @@
         }
 
         function getTotalHours() {
-            return time.getTotalHours(
+            var totalHours = time.getTotalHours(
                 vm.today.arrival.value,
                 vm.today.lunchStart.value,
                 vm.today.lunchStop.value,
                 vm.today.departure.value
             );
+
+            if (vm.showResultAsDecimal) {
+                return time.convertToDecimal(totalHours);
+            }
+            return totalHours;
         }
 
         function canShowCheckMarkButton(target) {
@@ -188,6 +201,10 @@
 
         function hasVisibleButton(key) {
             return canShowCheckMarkButton(key) || vm.today[key].canUndo;
+        }
+
+        function saveShowResultAsDecimal() {
+            settings.saveSetting('showResultAsDecimal', vm.showResultAsDecimal);
         }
     }
 })();

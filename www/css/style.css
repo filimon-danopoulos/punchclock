@@ -2,6 +2,11 @@
     text-align: center;
 }
 
+.punchclock-discrete-text {
+    color: #777777;
+    font-size: small;
+}
+
 .punchclock-time {
     font-weight: bold;
     margin-right: -40px;
