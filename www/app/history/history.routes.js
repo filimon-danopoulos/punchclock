@@ -11,8 +11,17 @@
                 url: '/history',
                 views: {
                     'tab-history': {
-                        templateUrl: 'app/history/history.html',
+                        templateUrl: 'app/history/templates/history.html',
                         controller: 'HistoryController as vm'
+                    }
+                }
+            })
+            .state('app.details', {
+                url: '/details/:date',
+                views: {
+                    'tab-history': {
+                        templateUrl: 'app/history/templates/details.html',
+                        controller: 'DetailsController as vm'
                     }
                 }
             });

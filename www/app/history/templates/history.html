@@ -12,7 +12,8 @@
             <ion-item class="item-divider">
                 Days
             </ion-item>
-            <ion-item ng-repeat="day in vm.days">
+            <ion-item ng-repeat="day in vm.days"
+                      ui-sref="app.details(day)">
                 {{day.date}}
                 <span class="item-note">
                     <strong>{{vm.getDayTotal(day)}}</strong>

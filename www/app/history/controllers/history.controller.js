@@ -22,7 +22,11 @@
 
         /// Implementaion
         function initialize() {
-            vm.days = persistenceService.entity(dayEntity).selectAll();
+            vm.days = persistenceService.entity(dayEntity)
+                .selectAll()
+                .filter(function(x) {
+                    return x.arrival.value && x.departure.value;
+                });
         }
 
         function getDayTotal(day) {
