@@ -13,7 +13,7 @@
                 Days
             </ion-item>
             <ion-item ng-repeat="day in vm.days"
-                      ui-sref="app.details(day)">
+                      ui-sref="app.details({date: day.date })">
                 {{day.date}}
                 <span class="item-note">
                     <strong>{{vm.getDayTotal(day)}}</strong>
