@@ -37,7 +37,7 @@
         vm.shouldHideDayPart = shouldHideDayPart;
 
         /// Events
-        $scope.$on('$ionicView.beforeEnter', initialize);
+        $scope.$on('$ionicView.enter', initialize);
 
         /// Implementation
 
