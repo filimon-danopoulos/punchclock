@@ -81,7 +81,18 @@
 
         function getCurrentKey() {
             var date = new Date();
-            return date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+            return date.getFullYear()+
+                '-'+
+                formatDateNumber(date.getMonth())+
+                '-'+
+                formatDateNumber(date.getDate());
+        }
+
+        function formatDateNumber(number) {
+            if (number <= 9) {
+                return ['0', number].join('');
+            }
+            return number
         }
 
         function editEntry(target) {

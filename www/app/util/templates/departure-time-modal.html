@@ -1,0 +1,24 @@
+<div class="modal">
+    <ion-header-bar class="bar-positive">
+        <h1 class="title">Departure time</h1>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list>
+            <ion-item>
+                Today you can leave at
+                <span class="item-note">
+                    <strong>{{vm.departureTimeData.time}}</strong>
+                </span>
+            </ion-item>
+            <ion-item>
+                That is in
+                <span class="item-note">
+                    <strong>{{vm.departureTimeData.timeLeft}}</strong>
+                </span>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+    <ion-footer-bar class="bar-positive">
+        <div class="title" ng-click="vm.closeModal()">OK</div>
+    </ion-footer-bar>
+</div>
