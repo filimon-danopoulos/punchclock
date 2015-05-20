@@ -8,7 +8,8 @@
     function settingsServiceFActory(persistenceService, settingsEntity, settingsEntityKey) {
         return {
             saveSetting: saveSetting,
-            loadSetting: loadSetting
+            loadSetting: loadSetting,
+            loadSettings: loadSettings
         };
 
         function saveSetting(name, value) {
@@ -22,6 +23,16 @@
         function loadSetting(name) {
             var setting = persistenceService.entity(settingsEntity).select(name);
             return (setting ? setting.value : null);
+        }
+
+        function loadSettings() {
+            var settings = {};
+            persistenceService.entity(settingsEntity)
+                .selectAll()
+                .forEach(function(x) {
+                    settings[x.name] = x.value;
+                });
+            return settings;
         }
     }
 })();

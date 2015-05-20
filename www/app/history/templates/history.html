@@ -1,22 +1,11 @@
 <ion-view view-title="History">
     <ion-content>
         <ion-list >
-            <ion-item class="item-divider">
-                Settings
-            </ion-item>
-            <ion-toggle ng-model="vm.showTotalsAsDecimals">
-                <span class="discrete-text">
-                    Show totals as decimals
-                </span>
-            </ion-toggle>
-            <ion-item class="item-divider">
-                Days
-            </ion-item>
             <ion-item ng-repeat="day in vm.days"
                       ui-sref="app.details({date: day.date })">
                 {{day.date}}
-                <span class="item-note">
-                    <strong>{{vm.getDayTotal(day)}}</strong>
+                <span class="item-note history-time">
+                    {{vm.getDayTotal(day)}}
                 </span>
             </ion-item>
         </ion-list>

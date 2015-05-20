@@ -8,10 +8,12 @@
         '$scope',
         'persistenceService',
         'dayEntity',
-        'timeCalculationService'
+        'timeCalculationService',
+        'settingsService'
     ];
-    function HistoryController($scope, persistenceService, dayEntity, time) {
-        var vm = this;
+    function HistoryController($scope, persistenceService, dayEntity, time, settingsService) {
+        var vm = this,
+            showTotalsAsDecimals;
 
         /// Actions
         vm.getDayTotal = getDayTotal;
@@ -27,6 +29,7 @@
                 .filter(function(x) {
                     return x.arrival.value && x.departure.value;
                 });
+            showTotalsAsDecimals = settingsService.loadSetting('showHistoryTotalsAsDecimals');
         }
 
         function getDayTotal(day) {
@@ -37,7 +40,7 @@
                 day.departure.value
             );
 
-            if(vm.showTotalsAsDecimals) {
+            if(showTotalsAsDecimals) {
                 return time.convertToDecimal(total);
             }
 

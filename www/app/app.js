@@ -17,10 +17,13 @@
         .config(config)
         .run(run);
 
-    config.$inject = ['$urlRouterProvider'];
-    function config($urlRouterProvider) {
+    config.$inject = ['$urlRouterProvider', '$ionicConfigProvider'];
+    function config($urlRouterProvider, $ionicConfigProvider) {
         // Default route
         $urlRouterProvider.otherwise('/app/punchclock');
+
+        // Tabs on bottom for all platforms
+        $ionicConfigProvider.tabs.position('bottom');
     }
 
 

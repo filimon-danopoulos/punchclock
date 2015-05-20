@@ -1,3 +1,7 @@
+.pane {
+    background-color: #dfe6f2;
+}
+
 .edit-time-popup .popup-body input {
     text-align: center;
 }
@@ -19,4 +23,9 @@
 
 .punchclock-time-undoable {
     margin-right: 0;
+}
+
+.history-time {
+    font-weight: bold;
+    margin-right: -35px;
 }

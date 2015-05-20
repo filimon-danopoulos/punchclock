@@ -1,16 +1,19 @@
 <ion-view view-title="{{vm.day.date}}">
     <ion-content>
         <ion-list >
-            <ion-item class="item-divider">
-                Worked hours:
-                <span class="item-note">
-                    <strong>{{vm.getDayTotal()}}</strong>
-                </span>
-            </ion-item>
             <ion-item ng-repeat="dayPart in vm.daysParts" ng-hide="vm.shouldHideDayPart(dayPart)">
                 {{vm.descriptions[dayPart]}}
                 <span class="item-note">
                     <strong>{{vm.day[dayPart].value}}</strong>
+                </span>
+            </ion-item>
+            <ion-item  class="item-divider">
+                Result
+            </ion-item>
+            <ion-item>
+                Worked hours
+                <span class="item-note">
+                    <strong>{{vm.getDayTotal()}}</strong>
                 </span>
             </ion-item>
         </ion-list>

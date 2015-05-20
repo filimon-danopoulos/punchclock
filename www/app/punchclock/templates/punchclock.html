@@ -4,7 +4,7 @@
             <ion-item class="item-divider">
                 Times
             </ion-item>
-            <ion-item ng-repeat="key in vm.getTodayActivities()"
+            <ion-item ng-repeat="key in vm.activities"
                     class="item-icon-right">
                 {{vm.today[key].description}}
                 <i class="icon ion-checkmark balanced"
@@ -41,7 +41,7 @@
             </ion-item>
             <ion-item ng-show="vm.canShowTotalHours()"
                 on-swipe="vm.toggleShowResultAsDecimal()">
-                Total, {{vm.getTotalDescription()}}:
+                Total, {{vm.getTotalDescription()}}
                 <span class="item-note punchclock-result">
                     <strong>{{vm.getTotalHours()}}</strong>
                 </span>

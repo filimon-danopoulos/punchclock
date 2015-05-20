@@ -32,11 +32,19 @@
         var vm = this,
             editModal;
 
+        /// Data
+        vm.activities = [
+            'arrival',
+            'lunchStart',
+            'lunchStop',
+            'departure'
+        ];
+        vm.today = {};
+
         /// Actions
         vm.editEntry = editEntry;
         vm.clearEntry = clearEntry;
         vm.setTime = setTime;
-        vm.getTodayActivities = getTodayActivities;
         vm.canShowTotalHours = canShowTotalHours;
         vm.getTotalHours = getTotalHours;
         vm.canShowCheckMarkButton = canShowCheckMarkButton;
@@ -45,8 +53,10 @@
         vm.toggleShowResultAsDecimal = toggleShowResultAsDecimal;
         vm.getTotalDescription = getTotalDescription;
 
-        /// Initialize
-        initialize();
+        /// Events
+        $scope.$on('$ionicView.beforeEnter', initialize);
+
+
         /// Implementation
         function initialize() {
             loadSettings();
@@ -135,14 +145,6 @@
             }, 10000);
         }
 
-
-        function getTodayActivities() {
-            return Object.keys(vm.today)
-                .sort(function(a, b) {
-                    return vm.today[a].order - vm.today[b].order;
-                });
-        }
-
         function canShowTotalHours() {
             return vm.today.arrival.value && vm.today.departure.value;
         }
@@ -206,7 +208,6 @@
 
         function toggleShowResultAsDecimal() {
             vm.showResultAsDecimal = !vm.showResultAsDecimal;
-            settings.saveSetting('showResultAsDecimal', vm.showResultAsDecimal);
         }
 
         function getTotalDescription() {

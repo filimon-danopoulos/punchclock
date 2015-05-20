@@ -1,0 +1,24 @@
+<ion-view view-title="Settings">
+    <ion-content>
+        <ion-list >
+            <ion-item class="item-divider">
+                Day
+            </ion-item>
+            <ion-toggle ng-model="vm.settings.showResultAsDecimal"
+                    ng-change="vm.saveShowResultAsDecimal()">
+                <span class="discrete-text">
+                    Show result as decimals
+                </span>
+            </ion-toggle>
+            <ion-item class="item-divider">
+                History
+            </ion-item>
+            <ion-toggle ng-model="vm.settings.showHistoryTotalsAsDecimals"
+                    ng-change="vm.saveShowHistoryTotalsAsDecimals()">
+                <span class="discrete-text">
+                    Show total as decimals
+                </span>
+            </ion-toggle>
+        </ion-list>
+    </ion-content>
+</ion-view>

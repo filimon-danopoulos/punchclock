@@ -10,7 +10,8 @@
         'persistenceService',
         'dayEntity',
         'punchclockDefaults',
-        'timeCalculationService'
+        'timeCalculationService',
+        'settingsService'
     ];
     function DetailsController(
             $scope,
@@ -18,8 +19,10 @@
             persistence,
             dayEntity,
             defaults,
-            time) {
-        var vm = this;
+            time,
+            settingsService) {
+        var vm = this,
+            showTotalsAsDecimals;
 
         /// Data
         vm.daysParts = [
@@ -34,7 +37,7 @@
         vm.shouldHideDayPart = shouldHideDayPart;
 
         /// Events
-        $scope.$on('$ionicView.enter', initialize);
+        $scope.$on('$ionicView.beforeEnter', initialize);
 
         /// Implementation
 
@@ -48,21 +51,32 @@
                 lunchStop: defaults.lunchStop.description,
                 departure: defaults.departure.description
             };
+
+            showTotalsAsDecimals = settingsService.loadSetting('showHistoryTotalsAsDecimals');
         }
 
         function getDayTotal() {
             if (!vm.day) {
                 return;
             }
-            return time.getTotalHours(
+            var total = time.getTotalHours(
                 vm.day.arrival.value,
                 vm.day.lunchStart.value,
                 vm.day.lunchStop.value,
                 vm.day.departure.value
             );
+
+            if (showTotalsAsDecimals) {
+                return time.convertToDecimal(total);
+            }
+
+            return total;
         }
 
         function shouldHideDayPart(dayPart) {
+            if (!vm.day) {
+                return;
+            }
             return (dayPart === 'lunchStart' || dayPart === 'lunchStop') &&
                 !vm.day[dayPart].value;
         }
