@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('app.punchclock')
-            .factory('dayMappingService', dayMappingServiceFactory);
+        .factory('dayMappingService', dayMappingServiceFactory);
 
     dayMappingServiceFactory.inject = ['dayEntityKey', 'punchclockDefaults'];
     function dayMappingServiceFactory(dayEntityKey, punchclockDefaults) {

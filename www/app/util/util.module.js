@@ -1,5 +1,8 @@
 (function() {
     'use strict';
 
-    angular.module('app.util', []);
+    angular.module('app.util', [
+        'app.common',
+        'app.punchclock'
+    ]);
 })();

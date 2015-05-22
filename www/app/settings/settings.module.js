@@ -1,7 +1,9 @@
 (function() {
     'use strict';
 
-    angular.module('app.settings', [])
+    angular.module('app.settings', [
+            'app.common'
+        ])
         .constant('settingsEntityKey', 'name')
         .constant('settingsEntity', 'settings')
         .run(run);

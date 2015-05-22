@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('app.punchclock')
+    angular.module('app.common')
         .factory('timeCalculationService', timeCalculationServiceFactory);
 
     timeCalculationServiceFactory.inject = [];
@@ -11,7 +11,10 @@
             formatNumber: formatNumber,
             formatTotalHours: formatTotalHours,
             getTotalHours: getTotalHours,
-            convertToDecimal: convertToDecimal
+            convertToDecimal: convertToDecimal,
+            getDepartureTime: getDepartureTime,
+            getTimeLeft: getTimeLeft,
+            getCurrentKey: getCurrentKey
         };
 
         function getTimeString(now) {
@@ -64,6 +67,51 @@
                 minutes = parseInt(timeParts[1], 10);
             minutes = (Math.round((minutes/60)*Math.pow(10, precision))/Math.pow(10, precision));
             return (hours+minutes).toFixed(precision);
+        }
+
+        function getTimeLeft(arrival, lunchStart, lunchStop) {
+            var now = new Date(),
+                departureTime = getDepartureTime(arrival, lunchStart, lunchStop),
+                currentTime = getCurrentTime(),
+                diff = getTimeInMinutes(departureTime) - getTimeInMinutes(currentTime);
+            if (diff < 0) {
+                return '-'+formatTotalHours(Math.abs(diff));
+            }
+            return formatTotalHours(diff);
+        }
+
+        function getDepartureTime(arrival, lunchStart, lunchStop) {
+            var arrivalTime = getTimeInMinutes(arrival),
+                totalTime = arrivalTime + 8*60;
+
+            if (lunchStart && lunchStop) {
+                totalTime  += (getTimeInMinutes(lunchStop) - getTimeInMinutes(lunchStart));
+            }
+            return formatTotalHours(totalTime);
+        }
+
+        function getCurrentTime() {
+            var now = new Date();
+            return now.getHours()+':'+now.getMinutes();
+        }
+
+
+        function getCurrentKey() {
+            var date = new Date();
+            return date.getFullYear()+
+                '-'+
+                formatDateNumber(date.getMonth())+
+                '-'+
+                formatDateNumber(date.getDate());
+        }
+
+
+
+        function formatDateNumber(number) {
+            if (number <= 9) {
+                return ['0', number].join('');
+            }
+            return number;
         }
     }
 })();

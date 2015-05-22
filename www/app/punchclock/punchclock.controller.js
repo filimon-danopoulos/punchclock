@@ -69,30 +69,14 @@
 
         function loadData() {
             var entity = persistence.entity(dayEntity),
-                data = entity.select(getCurrentKey());
+                data = entity.select(time.getCurrentKey());
             if (data) {
                 vm.today = dayMapper.mapFromDataEntity(data);
             } else {
                 vm.today = defaultValues;
-                entity.insert(dayMapper.mapToDataEntity(getCurrentKey(), vm.today));
+                entity.insert(dayMapper.mapToDataEntity(time.getCurrentKey(), vm.today));
             }
 
-        }
-
-        function getCurrentKey() {
-            var date = new Date();
-            return date.getFullYear()+
-                '-'+
-                formatDateNumber(date.getMonth())+
-                '-'+
-                formatDateNumber(date.getDate());
-        }
-
-        function formatDateNumber(number) {
-            if (number <= 9) {
-                return ['0', number].join('');
-            }
-            return number
         }
 
         function editEntry(target) {
@@ -133,7 +117,7 @@
         }
 
         function save() {
-            var data = dayMapper.mapToDataEntity(getCurrentKey(), vm.today);
+            var data = dayMapper.mapToDataEntity(time.getCurrentKey(), vm.today);
             persistence.entity(dayEntity).upsert(data);
         }
 
