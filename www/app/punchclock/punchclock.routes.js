@@ -11,7 +11,7 @@
                 url: '/punchclock',
                 views: {
                     'tab-punchclock': {
-                        templateUrl: 'app/punchclock/punchclock.html',
+                        templateUrl: 'app/punchclock/templates/punchclock.html',
                         controller: 'PunchClockController as vm'
                     }
                 }

@@ -7,7 +7,7 @@
     PunchClockController.$inject = [
         '$scope',
         '$timeout',
-        '$ionicPopup',
+        '$ionicModal',
         '$ionicListDelegate',
         'timeCalculationService',
         'persistenceService',
@@ -20,7 +20,7 @@
     function PunchClockController(
             $scope,
             $timeout,
-            $ionicPopup,
+            $ionicModal,
             $ionicListDelegate,
             time,
             persistence,
@@ -30,7 +30,8 @@
             defaultValues,
             settings) {
         var vm = this,
-            editModal;
+            editModal,
+            undoTimer;
 
         /// Data
         vm.activities = [
@@ -52,15 +53,23 @@
         vm.undo = undo;
         vm.toggleShowResultAsDecimal = toggleShowResultAsDecimal;
         vm.getTotalDescription = getTotalDescription;
+        vm.closeModal = closeModal;
+        vm.saveModalResult = saveModalResult;
 
         /// Events
         $scope.$on('$ionicView.beforeEnter', initialize);
+        $scope.$on('$ionicView.enter', loadModal);
+        $scope.$on('$destroy', cleanUp);
 
 
         /// Implementation
         function initialize() {
             loadSettings();
             loadData();
+        }
+
+        function cleanUp() {
+            editModal.remove();
         }
 
         function loadSettings() {
@@ -73,10 +82,23 @@
             if (data) {
                 vm.today = dayMapper.mapFromDataEntity(data);
             } else {
-                vm.today = defaultValues;
-                entity.insert(dayMapper.mapToDataEntity(time.getCurrentKey(), vm.today));
+                setDefaultValues();
             }
+        }
 
+        function setDefaultValues() {
+            var entity = persistence.entity(dayEntity);
+            vm.today = defaultValues;
+            entity.insert(dayMapper.mapToDataEntity(time.getCurrentKey(), vm.today));
+        }
+
+        function loadModal() {
+            $ionicModal.fromTemplateUrl('app/punchclock/templates/edit-modal.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                editModal = modal;
+            });
         }
 
         function editEntry(target) {
@@ -85,35 +107,22 @@
                 return;
             }
             vm.edited = target;
-            showEditPopup();
+            editModal.show();
         }
 
-        function showEditPopup() {
-            $ionicPopup.prompt({
-                title: 'Enter new time',
-                subTitle: 'The entry will be marked as edited.',
-                cssClass: 'edit-time-popup',
-                inputPlaceholder: vm.today[vm.edited].value
-            }).then(function(newTime) {
-                if (newTime) {
-                    doEdit(newTime);
-                }
-            });
+        function updateData(key, time) {
+            vm.today[key].original = vm.today[key].value;
+            vm.today[key].value = time;
+            vm.today[key].canUndo = false;
+            vm.today[key].edited = true;
+            save();
         }
 
-        function doEdit(newTime) {
+        function getTime(newTime) {
             var now = new Date(),
                 timeParts = newTime.split(':');
             now.setHours(timeParts[0]);
             now.setMinutes(timeParts[1]);
-            vm.today[vm.edited].original = vm.today[vm.edited].value;
-            vm.today[vm.edited].value = time.getTimeString(now);
-            vm.today[vm.edited].canUndo = false;
-            vm.today[vm.edited].edited = true;
-
-            vm.edited = null;
-
-            save();
         }
 
         function save() {
@@ -123,11 +132,7 @@
 
         function clearEntry(key) {
             $ionicListDelegate.closeOptionButtons();
-            vm.today[key].original = vm.today[key].value;
-            vm.today[key].value = null;
-            vm.today[key].canUndo = false;
-            vm.today[key].edited = true;
-            save();
+            updateData(key, null);
         }
 
         function setTime(target, isEdit) {
@@ -135,7 +140,11 @@
             vm.today[target].value = time.getTimeString(now);
             vm.today[target].canUndo = true;
             save();
-            $timeout(function() {
+            startUndoDisableTimer(target);
+        }
+
+        function startUndoDisableTimer(target) {
+            undoTimer = $timeout(function() {
                 vm.today[target].canUndo = false;
             }, 10000);
         }
@@ -189,11 +198,10 @@
 
         function undo(target) {
             $ionicListDelegate.closeOptionButtons();
-
+            $timeout.cancel(undoTimer);
             vm.today[target].value = null;
             vm.today[target].timestamp = null;
             vm.today[target].canUndo = false;
-
             save();
         }
 
@@ -210,6 +218,24 @@
                 return 'as decimal';
             }
             return 'hours and minutes';
+        }
+
+        function closeModal() {
+            editModal.hide();
+        }
+
+        function saveModalResult(newValue) {
+            editModal.hide();
+            newValue = formatNewValue(newValue);
+            $timeout.cancel(undoTimer);
+            updateData(vm.edited, newValue);
+
+            vm.edited = null;
+            vm.newValue = null;
+        }
+
+        function formatNewValue(newValue) {
+            return newValue.slice(0,2)+':'+newValue.slice(2);
         }
     }
 })();

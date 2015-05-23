@@ -30,13 +30,15 @@
 
         /// Events
         $scope.$on('$ionicView.enter', initialize);
-        $scope.$on('$destroy', function() {
-            departureTimeModal.remove();
-        });
+        $scope.$on('$destroy', cleanUp);
 
         /// Implementation
         function initialize() {
             loadModal();
+        }
+
+        function cleanUp() {
+            departureTimeModal.remove();
         }
 
         function loadModal() {

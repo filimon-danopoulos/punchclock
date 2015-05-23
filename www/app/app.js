@@ -4,6 +4,7 @@
     var dependecies = [
         // Third party modules
         'ionic',
+        'ngMessages',
         // Application modules
         'app.common',
         'app.settings',

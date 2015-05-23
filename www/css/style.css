@@ -29,3 +29,9 @@
     font-weight: bold;
     margin-right: -35px;
 }
+
+.validation-message {
+    color: #777777;
+    text-align: center;
+    font-size: smaller;
+}

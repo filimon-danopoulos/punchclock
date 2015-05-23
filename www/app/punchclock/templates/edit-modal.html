@@ -1,0 +1,47 @@
+<div class="modal">
+    <ion-header-bar class="bar-positive">
+        <div class="title">
+            {{vm.today[vm.edited].description}}
+        </div>
+        <div class="buttons">
+            <button class="button button-icon icon ion-close" ng-click="vm.closeModal()"></button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form class="list" name="vm.editTimeForm" >
+            <label class="item item-input">
+                <span class="input-label">
+                    Current value
+                </span>
+                <strong>{{vm.today[vm.edited].value}}</strong>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">
+                    New value
+                </span>
+                    <input type="tel"
+                        placeholder="{{vm.today[vm.edited].value}}"
+                        name="timeInput"
+                        ng-model="vm.newValue"
+                        ng-pattern="/(?:(?:2[0-3])|(?:[01][0-9]))[0-5][0-9]/"
+                        ng-maxlength="4"
+                        required />
+                </label>
+            </label>
+            <div class="item item-divider" ng-hide="vm.editTimeForm.$valid"
+                    ng-messages="vm.editTimeForm.timeInput.$error">
+                <div class="validation-message"
+                    ng-message="required">Please enter new time</div>
+                <div class="validation-message"
+                    ng-message="pattern">Invalid format, should be HHMM</div>
+                <div class="validation-message"
+                    ng-message="maxlength">Input to long, max 4 digits</div>
+            </div>
+        </form>
+    </ion-content>
+    <ion-footer-bar class="bar-positive" ng-show="vm.editTimeForm.$valid">
+        <div class="title" ng-click="vm.saveModalResult(vm.newValue)">
+            OK
+        </div>
+    </ion-footer-bar>
+</div>

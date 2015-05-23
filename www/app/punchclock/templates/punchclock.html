@@ -1,9 +1,6 @@
 <ion-view view-title="Punch Clock">
     <ion-content>
         <ion-list >
-            <ion-item class="item-divider">
-                Times
-            </ion-item>
             <ion-item ng-repeat="key in vm.activities"
                     class="item-icon-right">
                 {{vm.today[key].description}}
