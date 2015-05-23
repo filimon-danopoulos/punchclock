@@ -4,19 +4,22 @@
     </ion-header-bar>
     <ion-content>
         <ion-list>
-            <ion-item>
+            <ion-item ng-hide="vm.hasDepartureTimeData()">
+                You have not even arrived yet...
+            </ion-item>
+            <ion-item ng-show="vm.hasDepartureTimeData()">
                 Today you can leave at
                 <span class="item-note">
                     <strong>{{vm.departureTimeData.time}}</strong>
                 </span>
             </ion-item>
-            <ion-item ng-show="vm.departureTimeData.timeLeft[0] !== '-'">
+            <ion-item ng-show="vm.hasTimeLeft()">
                 That is in
                 <span class="item-note">
                     <strong>{{vm.departureTimeData.timeLeft}}</strong>
                 </span>
             </ion-item>
-            <ion-item ng-show="vm.departureTimeData.timeLeft[0] === '-'">
+            <ion-item ng-show="vm.hasOvertime()">
                 You have stayed over time!
                 <span class="item-note">
                     <strong>{{vm.departureTimeData.timeLeft.slice(1)}}</strong>

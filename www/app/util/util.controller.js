@@ -24,16 +24,22 @@
         /// Actions
         vm.closeModal = closeModal;
         vm.showDepartureTimeModal = showDepartureTimeModal;
+        vm.hasDepartureTimeData = hasDepartureTimeData;
+        vm.hasTimeLeft = hasTimeLeft;
+        vm.hasOvertime = hasOvertime;
 
         /// Events
+        $scope.$on('$ionicView.enter', initialize);
         $scope.$on('$destroy', function() {
             departureTimeModal.remove();
         });
 
-        /// Initialization
-        initialize();
         /// Implementation
         function initialize() {
+            loadModal();
+        }
+
+        function loadModal() {
             $ionicModal.fromTemplateUrl('app/util/templates/departure-time-modal.html', {
                 scope: $scope,
                 animation: 'slide-in-up'
@@ -41,15 +47,11 @@
                 departureTimeModal = modal;
             });
 
+            loadModalData();
         }
 
-        function closeModal() {
-            openModal.hide();
-        }
-
-        function showDepartureTimeModal() {
+        function loadModalData() {
             var data = persistence.entity(day).select(time.getCurrentKey());
-            openModal = departureTimeModal;
             vm.departureTimeData.time = time.getDepartureTime(
                 data.arrival.value,
                 data.lunchStart.value,
@@ -60,7 +62,30 @@
                 data.lunchStart.value,
                 data.lunchStop.value
             );
+        }
+
+        function closeModal() {
+            openModal.hide();
+        }
+
+        function showDepartureTimeModal() {
+            openModal = departureTimeModal;
             departureTimeModal.show();
+        }
+
+        function hasDepartureTimeData() {
+            return vm.departureTimeData.time !== 'NaN:NaN' &&
+                vm.departureTimeData.timeLeft !== 'NaN:NaN';
+        }
+
+        function hasTimeLeft() {
+            return hasDepartureTimeData() &&
+                vm.departureTimeData.timeLeft[0] !== '-';
+        }
+
+        function hasOvertime() {
+            return hasDepartureTimeData() &&
+                vm.departureTimeData.timeLeft[0] === '-';
         }
     }
 })();
