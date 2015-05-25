@@ -2,10 +2,10 @@
 <widget id="com.ionicframework.punchclock285775" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>Punch Clock</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Keep track of you work hours with this simple punch clock app.
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="filimon.danopoulos@gmail.com" href="https://github.com/filimon-danopoulos">
+      Filimon Danopoulos
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -14,7 +14,7 @@
   <preference name="DisallowOverscroll" value="true"/>
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
-  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="AutoHideSplashScreen" value="false" />
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>

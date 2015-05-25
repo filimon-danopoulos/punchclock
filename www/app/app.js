@@ -5,6 +5,7 @@
         // Third party modules
         'ionic',
         'ngMessages',
+        'ngCordova',
         // Application modules
         'app.common',
         'app.settings',
@@ -28,9 +29,10 @@
     }
 
 
-    run.$inject = ['$ionicPlatform'];
-    function run($ionicPlatform) {
+    run.$inject = ['$ionicPlatform', '$cordovaSplashscreen'];
+    function run($ionicPlatform, $cordovaSplashscreen) {
         $ionicPlatform.ready(function() {
+            $cordovaSplashscreen.hide();
             // Hide the accessory bar by default
             if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
