@@ -100,7 +100,7 @@
             var date = new Date();
             return date.getFullYear()+
                 '-'+
-                formatDateNumber(date.getMonth())+
+                formatDateNumber(date.getMonth()+1)+
                 '-'+
                 formatDateNumber(date.getDate());
         }

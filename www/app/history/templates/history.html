@@ -1,7 +1,12 @@
 <ion-view view-title="History">
     <ion-content>
         <ion-list >
-            <ion-item ng-repeat="day in vm.days"
+            <ion-item ng-repeat-start="day in vm.days"
+                      class="item-divider"
+                      ng-if="vm.isFirstDayInWeek(day.date, $index)">
+                Week {{day.week}}
+            </ion-item>
+            <ion-item ng-repeat-end
                       ui-sref="app.details({date: day.date })">
                 {{day.date}}
                 <span class="item-note history-time">
