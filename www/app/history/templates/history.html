@@ -1,9 +1,12 @@
 <ion-view view-title="History">
     <ion-content>
         <ion-list >
+            <ion-item class="item-input">
+                <input type="tel" placeholder="Filter by week" ng-model="vm.weekFilter">
+            </ion-item>
             <ion-item ng-repeat-start="day in vm.days"
                       class="item-divider"
-                      ng-if="vm.isFirstDayInWeek(day.date, $index)">
+                      ng-show="vm.isFirstDayInWeek(day.week, $index)">
                 Week {{day.week}}
             </ion-item>
             <ion-item ng-repeat-end
@@ -12,6 +15,9 @@
                 <span class="item-note history-time">
                     {{vm.getDayTotal(day)}}
                 </span>
+            </ion-item>
+            <ion-item class="item-divider" ng-hide="vm.days.length">
+                No entries {{vm.weekFilter ? 'match the current filter' :  'available'}}.
             </ion-item>
         </ion-list>
     </ion-content>

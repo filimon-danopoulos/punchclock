@@ -13,7 +13,11 @@
     ];
     function HistoryController($scope, persistenceService, dayEntity, time, settingsService) {
         var vm = this,
-            showTotalsAsDecimals;
+            showTotalsAsDecimals,
+            days;
+
+        /// Data
+        vm.weekFilter = "";
 
         /// Actions
         vm.getDayTotal = getDayTotal;
@@ -21,11 +25,30 @@
 
         /// Events
         $scope.$on('$ionicView.enter', initialize);
+        $scope.$watch(function() {
+            return vm.weekFilter;
+        }, function(newValue, oldValue) {
+            var num = parseInt(newValue, 10),
+                pattern;
+            if (isNaN(num) || !num) {
+                vm.days = days;
+                return;
+            }
+            pattern = new RegExp('^'+num);
+            vm.days = days.filter(function(x) {
+                return pattern.test(x.week);
+            });
+        });
 
 
         /// Implementaion
         function initialize() {
-            vm.days = persistenceService.entity(dayEntity)
+            loadData();
+            showTotalsAsDecimals = settingsService.loadSetting('showHistoryTotalsAsDecimals');
+        }
+
+        function loadData() {
+            days = persistenceService.entity(dayEntity)
                 .selectAll()
                 .filter(function(x) {
                     return x.arrival.value && x.departure.value;
@@ -34,7 +57,7 @@
                     x.week = getWeekNumber(x.date);
                     return x;
                 });
-            showTotalsAsDecimals = settingsService.loadSetting('showHistoryTotalsAsDecimals');
+            vm.days = days;
         }
 
         function getWeekNumber(date) {
@@ -59,8 +82,10 @@
             return total;
         }
 
-        function isFirstDayInWeek(date, $index) {
-            return vm.days.map(function(x) {return x.date;}).indexOf(date) === $index;
+        function isFirstDayInWeek(week, $index) {
+            return vm.days.map(function(x) {
+                    return x.week;
+                }).indexOf(week) === $index;
         }
     }
 })();
