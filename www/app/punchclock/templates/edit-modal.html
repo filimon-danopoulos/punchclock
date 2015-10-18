@@ -13,8 +13,15 @@
                 Previous values
             </ion-item>
             <ion-item ng-repeat="edit in vm.today[vm.edited].edits track by $index">
-                <strong>{{edit.previous}}</strong> &#10145;  <strong>{{edit.new}}</strong>
-                <span class="item-note">{{edit.timestamp}}</span>
+                <span ng-if="edit.new">
+                    <strong>{{edit.previous}}</strong> &#10145;  <strong>{{edit.new}}</strong>
+                </span>
+                <span ng-if="!edit.new">
+                    Removed
+                </span>
+                <span class="item-note">
+                    {{edit.timestamp}}
+                </span>
             </ion-item>
         </ion-list>
         <form class="list" name="vm.editTimeForm" >
