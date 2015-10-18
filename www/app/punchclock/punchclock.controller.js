@@ -31,6 +31,7 @@
             settings) {
         var vm = this,
             editModal,
+            breaksModal,
             undoTimer;
 
         /// Data
@@ -53,8 +54,10 @@
         vm.undo = undo;
         vm.toggleShowResultAsDecimal = toggleShowResultAsDecimal;
         vm.getTotalDescription = getTotalDescription;
-        vm.closeModal = closeModal;
+        vm.closeEditModal = closeEditModal;
         vm.saveModalResult = saveModalResult;
+        vm.editBreaks = editBreaks;
+        vm.closeBreaksModal = closeBreaksModal;
 
         /// Events
         $scope.$on('$ionicView.beforeEnter', initialize);
@@ -70,6 +73,7 @@
 
         function cleanUp() {
             editModal.remove();
+            breaksModal.remove();
         }
 
         function loadSettings() {
@@ -98,6 +102,13 @@
                 animation: 'slide-in-up'
             }).then(function(modal) {
                 editModal = modal;
+            });
+
+            $ionicModal.fromTemplateUrl('app/punchclock/templates/breaks-modal.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                breaksModal = modal;
             });
         }
 
@@ -224,7 +235,7 @@
             return 'hours and minutes';
         }
 
-        function closeModal() {
+        function closeEditModal() {
             editModal.hide();
         }
 
@@ -240,6 +251,15 @@
 
         function formatNewValue(newValue) {
             return newValue.slice(0,2)+':'+newValue.slice(2);
+        }
+
+        function editBreaks() {
+            $ionicListDelegate.closeOptionButtons();
+            breaksModal.show();
+        }
+
+        function closeBreaksModal() {
+            breaksModal.hide();
         }
     }
 })();

@@ -1,6 +1,9 @@
 <ion-view view-title="Punch Clock">
     <ion-content>
         <ion-list >
+            <ion-item class="item-divider">
+                Checkpoints
+            </ion-item>
             <ion-item ng-repeat="key in vm.activities"
                     class="item-icon-right">
                 {{vm.today[key].description}}
@@ -28,6 +31,19 @@
                         class="button-clear button-assertive"
                         ng-click="vm.clearEntry(key)">
                     <i class="icon ion-close"></i>
+                </ion-option-button>
+            </ion-item>
+            <ion-item class="item-divider">
+                Breaks
+            </ion-item>
+            <ion-item class="item-icon-right">
+                Break totals
+                <span class="item-note punchclock-time">
+                    00:00
+                </span>
+                <ion-option-button class="button-clear button-balanced"
+                        ng-click="vm.editBreaks()">
+                    <i class="icon ion-plus"></i>
                 </ion-option-button>
             </ion-item>
             <ion-item class="item-divider" ng-show="vm.canShowTotalHours()">
