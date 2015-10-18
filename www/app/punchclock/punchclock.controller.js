@@ -110,9 +110,13 @@
             editModal.show();
         }
 
-        function updateData(key, time) {
-            vm.today[key].original = vm.today[key].value;
-            vm.today[key].value = time;
+        function updateData(key, newTime) {
+            vm.today[key].edits.push({
+                previous: vm.today[key].value,
+                new: newTime,
+                timestamp: time.getTimeString(new Date())
+            });
+            vm.today[key].value = newTime;
             vm.today[key].canUndo = false;
             vm.today[key].edited = true;
             save();

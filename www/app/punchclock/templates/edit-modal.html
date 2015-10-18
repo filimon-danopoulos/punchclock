@@ -8,26 +8,29 @@
         </div>
     </ion-header-bar>
     <ion-content>
+        <ion-list ng-if="vm.today[vm.edited].edits.length">
+            <ion-item class="item-divider">
+                Previous values
+            </ion-item>
+            <ion-item ng-repeat="edit in vm.today[vm.edited].edits track by $index">
+                <strong>{{edit.previous}}</strong> &#10145;  <strong>{{edit.new}}</strong>
+                <span class="item-note">{{edit.timestamp}}</span>
+            </ion-item>
+        </ion-list>
         <form class="list" name="vm.editTimeForm" >
-            <label class="item item-input">
-                <span class="input-label">
-                    Current value
-                </span>
-                <strong>{{vm.today[vm.edited].value}}</strong>
-            </label>
-            <label class="item item-input">
-                <span class="input-label">
-                    New value
-                </span>
-                    <input type="tel"
-                        placeholder="{{vm.today[vm.edited].value}}"
-                        name="timeInput"
-                        ng-model="vm.newValue"
-                        ng-pattern="/(?:(?:2[0-3])|(?:[01][0-9]))[0-5][0-9]/"
-                        ng-maxlength="4"
-                        required />
-                </label>
-            </label>
+            <ion-item class="item-divider">
+                Enter new value
+            </ion-item>
+            <ion-item class="item-input">
+                <input type="tel"
+                    placeholder="{{vm.today[vm.edited].value}}"
+                    name="timeInput"
+                    ng-model="vm.newValue"
+                    ng-pattern="/(?:(?:2[0-3])|(?:[01][0-9]))[0-5][0-9]/"
+                    ng-maxlength="4"
+                    required
+                    class="edit-modal-input"/>
+            </ion-item>
             <div class="item item-divider" ng-hide="vm.editTimeForm.$valid"
                     ng-messages="vm.editTimeForm.timeInput.$error">
                 <div class="validation-message"

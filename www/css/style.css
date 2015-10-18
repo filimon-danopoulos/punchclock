@@ -2,8 +2,9 @@
     background-color: #dfe6f2;
 }
 
-.edit-time-popup .popup-body input {
+.edit-modal-input {
     text-align: center;
+    font-weight: bold;
 }
 
 .discrete-text {

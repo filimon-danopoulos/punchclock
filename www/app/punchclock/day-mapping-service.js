@@ -18,7 +18,7 @@
                 .forEach(function(x) {
                     data[x] = {
                         value: day[x].value,
-                        original: day[x].original,
+                        edits: day[x].edits,
                         edited: day[x].edited
                     };
                 });
@@ -34,7 +34,7 @@
                         return;
                     }
                     result[x].value = entity[x].value;
-                    result[x].original = entity[x].original;
+                    result[x].edits = entity[x].edits;
                     result[x].edited = entity[x].edited;
                 });
 

@@ -7,7 +7,7 @@
             value: null,
             canUndo: false,
             edited: false,
-            orgininal: null
+            edits: []
         },
         lunchStart: {
             order: 2,
@@ -15,7 +15,7 @@
             value: null,
             canUndo: false,
             edited: false,
-            orgininal: null
+            edits: []
         },
         lunchStop: {
             order: 3,
@@ -23,7 +23,7 @@
             value: null,
             canUndo: false,
             edited: false,
-            orgininal: null
+            edits: []
         },
         departure: {
             order: 4,
@@ -31,7 +31,7 @@
             value: null,
             canUndo: false,
             edited: false,
-            orgininal: null
+            edits: []
         }
     };
 
