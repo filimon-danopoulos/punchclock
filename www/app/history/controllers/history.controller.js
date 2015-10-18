@@ -57,7 +57,22 @@
                     x.week = getWeekNumber(x.date);
                     return x;
                 });
+
+            days = days.sort(function(a, b) {
+                var aDay = getDay(a.date),
+                    aWeek = getWeekNumber(a.date)
+            });
+
+
             vm.days = days;
+        }
+
+        function getDay(date) {
+            var day = date.getDay();
+            if (day === 0) {
+                return 7;
+            }
+            return day;
         }
 
         function getWeekNumber(date) {
