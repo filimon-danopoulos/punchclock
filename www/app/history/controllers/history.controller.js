@@ -14,6 +14,7 @@
     function HistoryController($scope, persistenceService, dayEntity, time, settingsService) {
         var vm = this,
             showTotalsAsDecimals,
+            showIncompleEnties,
             days;
 
         /// Data
@@ -45,13 +46,14 @@
         function initialize() {
             loadData();
             showTotalsAsDecimals = settingsService.loadSetting('showHistoryTotalsAsDecimals');
+            showIncompleEnties = settingsService.loadSetting('showIncompleEntiesInHistory');
         }
 
         function loadData() {
             days = persistenceService.entity(dayEntity)
                 .selectAll()
                 .filter(function(x) {
-                    return x.arrival.value && x.departure.value;
+                    return showIncompleEnties || x.arrival.value && x.departure.value;
                 })
                 .map(function(x) {
                     x.week = getWeekNumber(x.date);
@@ -60,7 +62,7 @@
 
             days = days.sort(function(a, b) {
                 var aDay = getDay(a.date),
-                    aWeek = getWeekNumber(a.date)
+                    aWeek = getWeekNumber(a.date);
             });
 
 
@@ -83,6 +85,10 @@
         }
 
         function getDayTotal(day) {
+            if(showIncompleEnties && (!day.arrival.value || !day.departure.value)) {
+                return;
+            }
+
             var total = time.getTotalHours(
                 day.arrival.value,
                 day.lunchStart.value,

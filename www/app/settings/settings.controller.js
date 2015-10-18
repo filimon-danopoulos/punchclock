@@ -11,6 +11,7 @@
         /// Actions
         vm.saveShowResultAsDecimal = saveShowResultAsDecimal;
         vm.saveShowHistoryTotalsAsDecimals = saveShowHistoryTotalsAsDecimals;
+        vm.saveShowIncompleEntiesInHistory = saveShowIncompleEntiesInHistory;
 
         /// Events
         $scope.$on('$ionicView.enter', initialize);
@@ -31,6 +32,13 @@
             settingsService.saveSetting(
                 'showHistoryTotalsAsDecimals',
                 vm.settings.showHistoryTotalsAsDecimals
+            );
+        }
+
+        function saveShowIncompleEntiesInHistory() {
+            settingsService.saveSetting(
+                'showIncompleEntiesInHistory',
+                vm.settings.showIncompleEntiesInHistory
             );
         }
     }

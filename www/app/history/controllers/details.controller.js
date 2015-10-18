@@ -22,7 +22,8 @@
             time,
             settingsService) {
         var vm = this,
-            showTotalsAsDecimals;
+            showTotalsAsDecimals,
+            showIncompleEnties;
 
         /// Data
         vm.daysParts = [
@@ -53,10 +54,11 @@
             };
 
             showTotalsAsDecimals = settingsService.loadSetting('showHistoryTotalsAsDecimals');
+            showIncompleEnties = settingsService.loadSetting('showIncompleEntiesInHistory');
         }
 
         function getDayTotal() {
-            if (!vm.day) {
+            if (!vm.day || (showIncompleEnties && (!vm.day.arrival.value || !vm.day.departure.value))) {
                 return;
             }
             var total = time.getTotalHours(

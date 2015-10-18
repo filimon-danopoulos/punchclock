@@ -15,6 +15,10 @@
                     ng-change="vm.saveShowHistoryTotalsAsDecimals()">
                 Show total as decimals
             </ion-toggle>
+            <ion-toggle ng-model="vm.settings.showIncompleEntiesInHistory"
+                    ng-change="vm.saveShowIncompleEntiesInHistory()">
+                Show incomplete entries
+            </ion-toggle>
         </ion-list>
     </ion-content>
 </ion-view>
