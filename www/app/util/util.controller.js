@@ -14,12 +14,14 @@
     function UtilController($scope, $ionicModal, time, persistence, day) {
         var vm = this,
             departureTimeModal,
-            openModal;
+            openModal,
+            savedDataModal;
 
         vm.departureTimeData = {
             time: '',
             timeLeft: ''
         };
+        vm.savedData = '';
 
         /// Actions
         vm.closeModal = closeModal;
@@ -27,6 +29,7 @@
         vm.hasDepartureTimeData = hasDepartureTimeData;
         vm.hasTimeLeft = hasTimeLeft;
         vm.hasOvertime = hasOvertime;
+        vm.showSavedDataModal = showSavedDataModal;
 
         /// Events
         $scope.$on('$ionicView.enter', initialize);
@@ -34,14 +37,14 @@
 
         /// Implementation
         function initialize() {
-            loadModal();
+            loadModals();
         }
 
         function cleanUp() {
             departureTimeModal.remove();
         }
 
-        function loadModal() {
+        function loadModals() {
             $ionicModal.fromTemplateUrl('app/util/templates/departure-time-modal.html', {
                 scope: $scope,
                 animation: 'slide-in-up'
@@ -49,10 +52,25 @@
                 departureTimeModal = modal;
             });
 
-            loadModalData();
+            $ionicModal.fromTemplateUrl('app/util/templates/saved-data-modal.html', {
+                scope: $scope,
+                animation: 'slide-in-up'
+            }).then(function(modal) {
+                savedDataModal = modal;
+            });
         }
 
-        function loadModalData() {
+        function closeModal() {
+            openModal.hide();
+        }
+
+        function showDepartureTimeModal() {
+            loadDepartureTime();
+            openModal = departureTimeModal;
+            departureTimeModal.show();
+        }
+
+        function loadDepartureTime() {
             var data = persistence.entity(day).select(time.getCurrentKey());
             vm.departureTimeData.time = time.getDepartureTime(
                 data.arrival.value,
@@ -64,15 +82,6 @@
                 data.lunchStart.value,
                 data.lunchStop.value
             );
-        }
-
-        function closeModal() {
-            openModal.hide();
-        }
-
-        function showDepartureTimeModal() {
-            openModal = departureTimeModal;
-            departureTimeModal.show();
         }
 
         function hasDepartureTimeData() {
@@ -88,6 +97,17 @@
         function hasOvertime() {
             return hasDepartureTimeData() &&
                 vm.departureTimeData.timeLeft[0] === '-';
+        }
+
+        function showSavedDataModal() {
+            loadSavedData();
+            openModal = savedDataModal;
+            openModal.show();
+        }
+
+        function loadSavedData() {
+            var data = persistence.entity(day).selectAll();
+            vm.savedData = JSON.stringify(data, null, "  ");
         }
     }
 })();

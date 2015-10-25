@@ -1,0 +1,13 @@
+<div class="modal">
+    <ion-header-bar class="bar-positive">
+        <h1 class="title">Saved Data</h1>
+    </ion-header-bar>
+    <ion-content contenteditable>
+        <ion-item class="item item-text-wrap">
+            {{vm.savedData}}
+        </ion-item>
+    </ion-content>
+    <ion-footer-bar class="bar-positive">
+        <div class="title" ng-click="vm.closeModal()">OK</div>
+    </ion-footer-bar>
+</div>

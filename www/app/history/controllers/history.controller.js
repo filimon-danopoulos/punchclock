@@ -44,29 +44,25 @@
 
         /// Implementaion
         function initialize() {
-            loadData();
             showTotalsAsDecimals = settingsService.loadSetting('showHistoryTotalsAsDecimals');
             showIncompleEnties = settingsService.loadSetting('showIncompleEntiesInHistory');
+            loadData();
         }
 
         function loadData() {
             days = persistenceService.entity(dayEntity)
                 .selectAll()
                 .filter(function(x) {
-                    return showIncompleEnties || x.arrival.value && x.departure.value;
+                    return showIncompleEnties || (x.arrival.value && x.departure.value);
                 })
                 .map(function(x) {
                     x.week = getWeekNumber(x.date);
                     return x;
                 });
 
-            days = days.sort(function(a, b) {
-                var aDay = getDay(a.date),
-                    aWeek = getWeekNumber(a.date);
+            vm.days = days.sort(function(a, b) {
+                return b.week - a.week;
             });
-
-
-            vm.days = days;
         }
 
         function getDay(date) {
